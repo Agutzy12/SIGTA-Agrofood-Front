@@ -1,0 +1,56 @@
+# Integración continua: en cada push revisa tipos y estilo, compila y recorre el sistema en el navegador
+# contra la API real (rama main de SIGTA-Agrofood-Back) con PostgreSQL.
+name: Pruebas
+on:
+  push:
+  pull_request:
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: sigta
+          POSTGRES_PASSWORD: sigta
+          POSTGRES_DB: sigta
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U sigta" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://sigta:sigta@localhost:5432/sigta?schema=public
+      DATABASE_URL_UNPOOLED: postgresql://sigta:sigta@localhost:5432/sigta?schema=public
+      JWT_SECRET: clave-de-integracion-continua
+      TZ: America/Argentina/Cordoba
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run build
+
+      # API para las pruebas en el navegador
+      - uses: actions/checkout@v4
+        with:
+          repository: Agutzy12/SIGTA-Agrofood-Back
+          ref: ${{ vars.BACK_REF || 'main' }}
+          path: back
+      - name: Levantar la API con los datos iniciales
+        working-directory: back
+        run: |
+          npm ci
+          npm run db:migrate
+          npm run build
+          node dist/seed/cli.js
+          nohup npm start > ../api.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://localhost:3000/api/salud && break; sleep 1; done
+
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - if: failure()
+        run: cat api.log

@@ -56,10 +56,10 @@ export function ProveedorSesion({ children }: { children: ReactNode }) {
     return cargarDatosDeSesion();
   }, [cargarDatosDeSesion]);
 
-  /** Modo demo: entra con un usuario de ejemplo sin escribir la contraseña. */
+  /** Acceso rápido de la pantalla de ingreso: entra con un usuario sin escribir la contraseña. */
   const ingresarComo = useCallback(async (email: string) => {
-    const demo = await api.get<{ clave: string }>('/auth/demo');
-    return iniciar(email, demo.clave);
+    const accesos = await api.get<{ clave: string }>('/auth/accesos');
+    return iniciar(email, accesos.clave);
   }, [iniciar]);
 
   const recargarPendientes = useCallback(() => {

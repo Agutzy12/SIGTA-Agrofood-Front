@@ -4,7 +4,6 @@ import { useSesion } from '../contexto/Sesion';
 import { GLOSARIO } from '../lib/glosario';
 import { PASOS } from '../lib/proceso';
 import { Cabecera, Miga } from '../componentes/Comunes';
-import { Icono } from '../componentes/Icono';
 import { ComoInstalar } from '../componentes/InstalarApp';
 
 export function ComoFunciona() {
@@ -60,7 +59,6 @@ export function ComoFunciona() {
               <tr><td><b>{nombreRol('DIRECCION')}</b></td><td>Consulta todo, sin modificar nada.</td></tr>
             </tbody>
           </table>
-          <p className="sub" style={{ marginTop: 12 }}><Icono n="info" tam={16} /> En la demo podés cambiar de usuario desde tu nombre, arriba a la derecha.</p>
         </section>
       </div>
 

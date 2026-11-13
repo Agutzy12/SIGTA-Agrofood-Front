@@ -25,12 +25,12 @@
 }
 
 @layer base {
-/* Tipografía Source Sans 3 (licencia SIL OFL) incluida en el proyecto: la demo funciona sin internet. */
+/* Tipografía Source Sans 3 (licencia SIL OFL) incluida en el proyecto: las pantallas funcionan sin depender de Google Fonts. */
 @font-face { font-family: 'Source Sans 3'; font-weight: 400; font-style: normal; font-display: swap; src: url('/fonts/SourceSans3-Regular.woff') format('woff'); }
 @font-face { font-family: 'Source Sans 3'; font-weight: 600; font-style: normal; font-display: swap; src: url('/fonts/SourceSans3-SemiBold.woff') format('woff'); }
 @font-face { font-family: 'Source Sans 3'; font-weight: 700; font-style: normal; font-display: swap; src: url('/fonts/SourceSans3-Bold.woff') format('woff'); }
 
-/* SIGTA demo · estilos compartidos por las 6 pantallas.
+/* SIGTA · estilos compartidos por las 6 pantallas.
    Los colores están como variables (:root) para cambiarlos en un solo lugar. */
 :root {
   /* Marca (de la web de Agrifood): verde, verde lima y naranja */
@@ -137,7 +137,7 @@ svg.ico { display: inline-block; vertical-align: -0.2em; width: 20px; height: 20
 .topbar .planta { display: flex; align-items: center; gap: 10px; }
 .topbar .fecha { color: var(--texto-suave); }
 .topbar .derecha { margin-left: auto; display: flex; align-items: center; gap: 16px; }
-.chip-demo { background: var(--gris-suave); border: 0; border-radius: 99px; padding: 6px 12px; font-size: 13px; color: var(--texto-suave); }
+.chip-boton { background: var(--gris-suave); border: 0; border-radius: 99px; padding: 6px 12px; font-size: 13px; color: var(--texto-suave); }
 .punto { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: currentColor; margin-right: 6px; vertical-align: middle; }
 .campana { position: relative; background: none; border: 0; padding: 4px; }
 .campana .n { position: absolute; top: -2px; right: -4px; background: var(--rojo); color: #fff; font-size: 10px; border-radius: 99px; padding: 1px 5px; }
@@ -405,7 +405,7 @@ table.tabla { width: 100%; border-collapse: collapse; }
 @media (max-width: 700px) {
   .topbar .planta, .topbar .campana { display: none; }
   .topbar .derecha { gap: 10px; }
-  .chip-demo { padding: 5px 9px; font-size: 12px; }
+  .chip-boton { padding: 5px 9px; font-size: 12px; }
   .cabecera h1 { font-size: 28px; }
   .kpis, .kpis.kpis-3 { grid-template-columns: 1fr 1fr; gap: 12px; }
   .tarjeta.atencion { grid-template-columns: 1fr; gap: 12px; }
