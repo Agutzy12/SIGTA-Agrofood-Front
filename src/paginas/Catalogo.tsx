@@ -1,4 +1,5 @@
 /** Consulta · Catálogo de productos: el mismo de agrifood-argentina.com, con la receta y el palletizado que usa SIGTA. */
+import { IconoLinea } from '../componentes/IconoLinea';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -67,13 +68,13 @@ export function Catalogo() {
       </Cabecera>
       <div className="pestanas">
         <button className={linea === 'TODAS' ? 'activa' : ''} onClick={() => setLinea('TODAS')}>Todas · {total}</button>
-        {datos.map((c) => <button key={c.codigo} className={linea === c.codigo ? 'activa' : ''} onClick={() => setLinea(c.codigo)}>{c.nombre.replace('Línea ', '')} · {c.productos.length}</button>)}
+        {datos.map((c) => <button key={c.codigo} className={linea === c.codigo ? 'activa' : ''} onClick={() => setLinea(c.codigo)}><IconoLinea codigo={c.codigo} />{c.nombre.replace('Línea ', '')} · {c.productos.length}</button>)}
         <label className="buscador"><Icono n="buscar" tam={18} /><input placeholder="Buscar producto" aria-label="Buscar producto" value={texto} onChange={(e) => setTexto(e.target.value)} /></label>
       </div>
       {visibles.map((c) => (
         <section key={c.codigo} className="tarjeta">
           <div className="tarjeta-cab">
-            <div><h2>{c.nombre}</h2><p className="sub">{c.familia} · {c.productos.length} {c.productos.length === 1 ? 'producto' : 'productos'}</p></div>
+            <div className="con-linea"><IconoLinea codigo={c.codigo} /><div><h2>{c.nombre}</h2><p className="sub">{c.familia} · {c.productos.length} {c.productos.length === 1 ? 'producto' : 'productos'}</p></div></div>
             {c.url_web && <a className="enlace" href={c.url_web} target="_blank" rel="noreferrer">Ver la línea en la web ↗</a>}
           </div>
           <table className="tabla">

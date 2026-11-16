@@ -30,67 +30,85 @@
 @font-face { font-family: 'Source Sans 3'; font-weight: 600; font-style: normal; font-display: swap; src: url('/fonts/SourceSans3-SemiBold.woff') format('woff'); }
 @font-face { font-family: 'Source Sans 3'; font-weight: 700; font-style: normal; font-display: swap; src: url('/fonts/SourceSans3-Bold.woff') format('woff'); }
 
-/* SIGTA · estilos compartidos por las 6 pantallas.
-   Los colores están como variables (:root) para cambiarlos en un solo lugar. */
+/* SIGTA · estilos compartidos por todas las pantallas.
+   Los colores están como variables (:root) para cambiarlos en un solo lugar.
+
+   PALETA (teoría del color)
+   Base de marca: lima #96C63A · verde #4F934E · naranja #F39B00 · gris cálido #DCDAD7 · azul acero #57738C
+   - Verde y lima son vecinos en el círculo cromático (análogos): dan la identidad "de campo".
+   - El naranja es el acento cálido: se usa poco (acción principal y "en curso") para que llame la atención.
+   - El azul acero es el complementario del naranja: lo equilibra y marca lo que espera o informa (cuarentena).
+   - Los grises salen del #DCDAD7 (gris cálido): fondos, líneas y textos comparten su temperatura.
+   - Regla 60-30-10: 60 % neutros, 30 % verdes, 10 % naranja.
+   Colores agregados (derivados de los cinco):
+   - Rojo ladrillo #B4472F para rechazos y bloqueos: es vecino del naranja (cálido) y tiene la misma fuerza que el verde,
+     así no desentona y se distingue del naranja por ser más oscuro.
+   - Versiones oscuras de cada color para texto (contraste AA sobre blanco) y versiones "suaves" para fondos.
+   - Gris carbón #33373A para avisos flotantes y textos. */
 :root {
-  /* Marca (de la web de Agrifood): verde, verde lima y naranja */
-  --marca-verde: #009448;
-  --marca-lima: #7fc821;
-  --ambar: #ffa300;
-  --ambar-oscuro: #8a5300;
-  --ambar-suave: #fff3da;
-  --ambar-borde: #f6d28a;
-  --ambar-hover: #f29a00;
-  --sobre-ambar: #2b2b00;
+  --marca-verde: #4F934E;
+  --marca-lima: #96C63A;
+  --acero: #57738C;
+  --ambar: #F39B00;
+  --ambar-oscuro: #8A5600;
+  --ambar-suave: #FDF1DA;
+  --ambar-borde: #F3CF8A;
+  --ambar-hover: #DD8D00;
+  --sobre-ambar: #2A2100;
+  --lima-suave: #EEF6DD;
 
-  --fondo: #f5f5f2;
+  --fondo: #F3F2F0;
   --superficie: #ffffff;
-  --superficie-2: #fafaf8;
-  --linea: #e6e6e0;
-  --texto: #363a36;
-  --texto-2: #55605a;
-  --texto-suave: #6b706b;
-  --gris-suave: #efefea;
-  --barra: #e4e4dd;
-  --toast: #2f332f;
+  --superficie-2: #F9F8F7;
+  --linea: #DCDAD7;
+  --texto: #2E3336;
+  --texto-2: #4E565B;
+  --texto-suave: #686F74;
+  --gris-suave: #ECEBE8;
+  --barra: #DCDAD7;
+  --toast: #33373A;
 
-  --verde: #1f7a3a;
-  --verde-suave: #e3f1e6;
-  --azul: #2e5d87;
-  --azul-suave: #e4edf5;
-  --rojo: #b3342a;
-  --rojo-suave: #fbe9e7;
+  --verde: #3D7A3C;
+  --verde-suave: #E6F0E4;
+  --azul: #46627A;
+  --azul-suave: #E5EBF0;
+  --rojo: #B4472F;
+  --rojo-suave: #F7E6E1;
 
-  --sombra: 0 1px 2px rgba(40, 40, 30, .05);
-  --sombra-flotante: 0 8px 28px rgba(40, 40, 30, .14);
+  --grabado: color-mix(in srgb, var(--texto) 22%, transparent);  /* tinta de las ilustraciones */
+  --sombra: 0 1px 2px rgba(46, 51, 54, .06);
+  --sombra-flotante: 0 8px 28px rgba(46, 51, 54, .16);
   --radio: 10px;
   color-scheme: light;
 }
 
-/* Modo oscuro: sólo se redefinen los colores; el resto del diseño es el mismo */
+/* Modo oscuro: sólo se redefinen los colores; el resto del diseño es el mismo.
+   Los fondos son el gris carbón (no negro puro) y los colores se aclaran y bajan de saturación para no vibrar. */
 :root[data-tema="oscuro"] {
-  --ambar-oscuro: #ffc766;
-  --ambar-suave: rgba(255, 163, 0, .14);
-  --ambar-borde: rgba(255, 163, 0, .45);
+  --ambar-oscuro: #F6B645;
+  --ambar-suave: rgba(243, 155, 0, .15);
+  --ambar-borde: rgba(243, 155, 0, .45);
+  --lima-suave: rgba(150, 198, 58, .14);
 
-  --fondo: #0d0d0e;
-  --superficie: #161617;
-  --superficie-2: #1c1c1e;
-  --linea: #2a2a2d;
-  --texto: #ececee;
-  --texto-2: #b9b9bf;
-  --texto-suave: #9a9aa2;
-  --gris-suave: #232326;
-  --barra: #34343a;
-  --toast: #2a2a2d;
+  --fondo: #17191B;
+  --superficie: #202427;
+  --superficie-2: #262B2E;
+  --linea: #343A3E;
+  --texto: #ECEAE7;
+  --texto-2: #B9BEC1;
+  --texto-suave: #969DA1;
+  --gris-suave: #2A2F33;
+  --barra: #3B4246;
+  --toast: #2F3438;
 
-  --verde: #6fd08a;
-  --verde-suave: rgba(70, 175, 100, .17);
-  --azul: #8fbbe6;
-  --azul-suave: rgba(90, 140, 200, .19);
-  --rojo: #ff958a;
-  --rojo-suave: rgba(230, 90, 80, .17);
+  --verde: #86C785;
+  --verde-suave: rgba(79, 147, 78, .22);
+  --azul: #9DB7CE;
+  --azul-suave: rgba(87, 115, 140, .28);
+  --rojo: #E88C76;
+  --rojo-suave: rgba(180, 71, 47, .24);
 
+  --grabado: color-mix(in srgb, var(--texto) 20%, transparent);
   --sombra: 0 1px 2px rgba(0, 0, 0, .35);
   --sombra-flotante: 0 8px 28px rgba(0, 0, 0, .55);
   color-scheme: dark;
@@ -240,7 +258,7 @@ table.tabla { width: 100%; border-collapse: collapse; }
 .entrada, select.entrada, textarea.entrada {
   width: 100%; border: 1px solid var(--linea); border-radius: 9px; padding: 12px 14px; background: var(--superficie); font: inherit; color: var(--texto); outline: 0;
 }
-.entrada:focus { border-color: var(--ambar); box-shadow: 0 0 0 3px rgba(255, 163, 0, .18); }
+.entrada:focus { border-color: var(--ambar); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ambar) 22%, transparent); }
 .entrada[readonly], .entrada:disabled { background: var(--fondo); color: var(--texto-2); }
 .entrada.error { border-color: var(--rojo); background: var(--rojo-suave); }
 .con-unidad { position: relative; }
@@ -545,7 +563,11 @@ table.tabla { width: 100%; border-collapse: collapse; }
 
   /* ---------- Pantalla de ingreso ---------- */
   .ingreso { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--fondo); }
-  .ingreso .presentacion { --pres-texto: var(--texto); --pres-2: var(--texto-2); --pres-3: var(--texto-suave); background: radial-gradient(120% 90% at 20% 0%, #dcefe1 0%, var(--superficie) 62%); border-right: 1px solid var(--linea); color: var(--pres-texto); padding: 56px 64px; display: flex; flex-direction: column; gap: 22px; }
+  .ingreso .presentacion { --pres-texto: var(--texto); --pres-2: var(--texto-2); --pres-3: var(--texto-suave); background: radial-gradient(120% 90% at 20% 0%, var(--lima-suave) 0%, var(--superficie) 62%); border-right: 1px solid var(--linea); color: var(--pres-texto); padding: 56px 64px; display: flex; flex-direction: column; gap: 22px; position: relative; isolation: isolate; overflow: hidden; }
+  /* Ilustración propia (scripts/grabados.py): la granja, al pie de la presentación */
+  .ingreso .presentacion::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 170px; z-index: -1; pointer-events: none; background: var(--grabado);
+    -webkit-mask: url('/img/grabados/granja.svg') center bottom / auto 100% no-repeat; mask: url('/img/grabados/granja.svg') center bottom / auto 100% no-repeat; }
+  .ingreso .presentacion { padding-bottom: 196px; }
   .ingreso .presentacion .marca-grande { display: flex; align-items: center; gap: 14px; }
   .ingreso .presentacion .marca-grande .logotipo-sigta { display: block; width: auto; max-width: 100%; }
   .ingreso .presentacion .marca-grande b { font-size: 44px; letter-spacing: 3px; line-height: 1; }
@@ -553,13 +575,13 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .ingreso .presentacion p { font-size: 17px; line-height: 1.5; color: var(--pres-2); max-width: 500px; }
   .ingreso .pasos-intro { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; max-width: 480px; }
   .ingreso .pasos-intro li { display: flex; align-items: center; gap: 14px; }
-  .ingreso .pasos-intro i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; background: rgba(31, 163, 74, .14); border: 1.5px solid #1fa34a; color: var(--pres-texto); display: grid; place-items: center; font-size: 14px; font-weight: 700; flex: none; }
+  .ingreso .pasos-intro i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; background: var(--verde-suave); border: 1.5px solid var(--marca-verde); color: var(--pres-texto); display: grid; place-items: center; font-size: 14px; font-weight: 700; flex: none; }
   .ingreso .pasos-intro b { display: block; font-size: 16px; }
   .ingreso .pasos-intro em { font-style: normal; font-weight: 400; color: var(--pres-3); font-size: 14px; }
   .ingreso .pasos-intro li { align-items: flex-start; }
   .ingreso .pasos-intro span { font-size: 13.5px; color: var(--pres-2); }
   .ingreso .cliente { margin-top: auto; display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--pres-2); }
-  :root[data-tema="oscuro"] .ingreso .presentacion { background: radial-gradient(120% 90% at 20% 0%, #0f1d14 0%, #0b0b0d 60%); border-right-color: transparent; }
+  :root[data-tema="oscuro"] .ingreso .presentacion { background: radial-gradient(120% 90% at 20% 0%, #24301f 0%, var(--fondo) 60%); border-right-color: transparent; }
   .ingreso .cliente img { background: #fff; border-radius: 10px; padding: 6px 10px; box-sizing: content-box; }
   .ingreso .formulario { padding: 56px 64px; display: flex; flex-direction: column; justify-content: center; gap: 26px; max-width: 560px; width: 100%; margin: 0 auto; }
   .ingreso .formulario h2 { font-size: 28px; font-weight: 600; }
@@ -608,6 +630,7 @@ table.tabla { width: 100%; border-collapse: collapse; }
   @media (max-width: 1100px) {
     .ingreso { grid-template-columns: 1fr; }
     .ingreso .presentacion, .ingreso .formulario { padding: 32px 20px; }
+    .ingreso .presentacion { padding-bottom: 120px; } .ingreso .presentacion::after { height: 100px; }
     .flujo { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 700px) {
@@ -710,7 +733,7 @@ table.tabla { width: 100%; border-collapse: collapse; }
 
 
   .marca a.sigta-titulo { color: inherit; border-radius: 10px; }
-  .marca a.sigta-titulo:hover b { color: #1fa34a; }
+  .marca a.sigta-titulo:hover b { color: var(--marca-verde); }
   .guia-item { display: block; margin-top: 4px; font-size: 13px; letter-spacing: 0; text-transform: none; color: var(--texto); font-weight: 600; }
   .pasos-v li.hecho.activo .num { background: var(--marca-verde); color: #fff; box-shadow: 0 0 0 4px var(--verde-suave); }
 
@@ -722,9 +745,14 @@ table.tabla { width: 100%; border-collapse: collapse; }
       radial-gradient(120% 140% at 0% 0%, var(--tono-suave) 0%, transparent 55%),
       linear-gradient(90deg, transparent 60%, color-mix(in srgb, var(--tono) 6%, transparent)),
       var(--superficie); }
-  .banner::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5;
-    background-image: radial-gradient(color-mix(in srgb, var(--tono) 35%, transparent) 1px, transparent 1.2px);
-    background-size: 18px 18px; mask-image: linear-gradient(90deg, transparent 55%, #000); }
+  /* A la derecha de cada encabezado va una ilustración propia según el área (scripts/grabados.py) */
+  .banner { --dibujo: url('/img/grabados/granja.svg'); }
+  .banner::before { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: min(62%, 760px); pointer-events: none;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--tono) 55%, var(--texto)) 45%); opacity: .34;
+    -webkit-mask: var(--dibujo) right 62% / auto 215% no-repeat; mask: var(--dibujo) right 62% / auto 215% no-repeat; }
+  .banner.produccion { --dibujo: url('/img/grabados/planta.svg'); }
+  .banner.calidad { --dibujo: url('/img/grabados/campo.svg'); }
+  .banner.deposito { --dibujo: url('/img/grabados/deposito.svg'); }
   .banner::after { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 4px; border-radius: 0 4px 4px 0; background: var(--tono); }
   .banner.calidad { --tono: var(--azul); --tono-suave: var(--azul-suave); }
   .banner.deposito { --tono: var(--verde); --tono-suave: var(--verde-suave); }
@@ -751,3 +779,15 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .ingreso { position: relative; }
   .ingreso-tema { position: absolute; top: 18px; right: 18px; z-index: 5; background: var(--superficie); }
 }
+
+/* ---------- Íconos de las líneas de producto (los de Agrifood); el color lo pone el tema ---------- */
+.ico-linea { display: inline-block; width: 1em; height: 1em; flex: none; background: var(--ambar);
+  -webkit-mask: var(--forma) center / contain no-repeat; mask: var(--forma) center / contain no-repeat; }
+.pestanas button .ico-linea { font-size: 20px; vertical-align: -4px; margin-right: 7px; background: currentColor; }
+.tarjeta-cab .con-linea { display: flex; align-items: center; gap: 14px; }
+.tarjeta-cab .con-linea .ico-linea { font-size: 42px; }
+
+/* Ilustración al pie del menú lateral */
+.sidebar .espacio { position: relative; min-height: 70px; }
+.sidebar .espacio::after { content: ''; position: absolute; left: -16px; right: -16px; bottom: 0; height: 70px; background: var(--grabado); pointer-events: none;
+  -webkit-mask: url('/img/grabados/campo.svg') 16% bottom / auto 100% no-repeat; mask: url('/img/grabados/campo.svg') 16% bottom / auto 100% no-repeat; }
