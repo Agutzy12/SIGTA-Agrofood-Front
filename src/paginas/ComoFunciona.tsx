@@ -39,7 +39,7 @@ export function ComoFunciona() {
       <div className="rejilla col-2">
         <section className="tarjeta">
           <h2>Reglas que el sistema hace cumplir</h2>
-          <ul className="lista-pronto" style={{ marginTop: 12 }}>
+          <ul className="lista-pronto reglas" style={{ marginTop: 12 }}>
             <li>Un lote recién elaborado queda en <b>cuarentena</b>: no se puede guardar en depósito ni despachar.</li>
             <li>Sólo <b>Calidad</b> puede liberarlo. Un lote <b>rechazado</b> queda bloqueado y su orden pasa a Rechazada (Scrap).</li>
             <li>El bloqueo se verifica en <b>dos niveles</b>: en la aplicación y en la base de datos (triggers de PostgreSQL).</li>

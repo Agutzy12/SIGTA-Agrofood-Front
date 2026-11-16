@@ -6,7 +6,7 @@ import { api } from '../lib/api';
 import { useDatos } from '../lib/useDatos';
 import { useSesion } from '../contexto/Sesion';
 import { useDialogos } from '../contexto/Dialogos';
-import { hoyTexto, leerNumero, num, pesoTexto } from '../lib/formato';
+import { hoyTexto, leerNumero, num, pesoTexto, unidad } from '../lib/formato';
 import type { Linea, Orden, Producto, Verificacion } from '../lib/tipos';
 import { Cabecera, Cargando, ConUnidad, Dato, ErrorCarga, Miga, Pill, Termino } from '../componentes/Comunes';
 import { Proceso } from '../componentes/Proceso';
@@ -156,13 +156,13 @@ function Formulario({ productos, lineas, borrador, numero }: { productos: Produc
         <div className="tarjeta-cab">
           <div><h2>Insumos</h2>
             <p className="sub">{kgPedidos > 0 ? `Receta para ${num(kgPedidos)} kg · se obtienen unas ${num(unidades)} unidades de ${pesoTexto(producto.presentacion_kg)} (${pallets} ${pallets === 1 ? 'pallet' : 'pallets'})` : 'Ingresá una cantidad para calcular.'}</p></div>
-          {verificacion && kgPedidos > 0 && <span><span className="fraccion" style={{ fontSize: 30 }}>{verificacion.criticosOk}/{verificacion.criticosTotal}</span> <span style={{ color: 'var(--texto-suave)' }}>disponibles</span></span>}
+          {verificacion && kgPedidos > 0 && <span><span className="fraccion" style={{ fontSize: 30 }}>{verificacion.criticosOk}/{verificacion.criticosTotal}</span> <span style={{ color: 'var(--texto-suave)' }}>insumos críticos disponibles</span></span>}
         </div>
         {!(kgPedidos > 0) ? null : !verificacion ? <Cargando /> : (<>
           <div className={`aviso ${verificacion.planificable ? 'verde' : 'rojo'}`} style={{ marginBottom: 0 }}>
             <Icono n={verificacion.planificable ? 'checkCirculo' : 'info'} />
-            <div><b>{verificacion.planificable ? 'Sin faltantes' : 'Hay faltantes críticos'}</b>
-              {verificacion.planificable ? 'Hay stock de todos los insumos críticos: podés planificar la orden.' : 'No se puede planificar. Guardá un borrador: se avisa a Compras automáticamente.'}</div>
+            <div><b>{verificacion.planificable ? (verificacion.hayFaltantes ? 'Sin faltantes críticos' : 'Sin faltantes') : 'Hay faltantes críticos'}</b>
+              {verificacion.planificable ? (verificacion.hayFaltantes ? 'Podés planificar la orden. Falta un insumo no crítico: al guardar se avisa a Compras.' : 'Hay stock de todos los insumos: podés planificar la orden.') : 'No se puede planificar. Guardá un borrador: se avisa a Compras automáticamente.'}</div>
           </div>
           <table className="tabla" style={{ marginTop: 16 }}>
             <thead><tr><th>Materia prima / empaque</th><th>Requerido</th><th>Disponible</th><th>Faltante</th><th>Estado</th></tr></thead>
@@ -170,7 +170,7 @@ function Formulario({ productos, lineas, borrador, numero }: { productos: Produc
               <tr key={i.insumo_id}>
                 <td><b>{i.nombre}</b><span className="peq">{i.codigo} · {i.tipo === 'MP' ? 'Materia prima' : i.critico ? 'Empaque crítico' : 'Empaque'}</span></td>
                 <td className="num">{num(i.requerido)} {i.unidad}</td><td className="num">{num(Math.max(0, i.disponible))} {i.unidad}</td>
-                <td className="num">{i.ok ? '—' : `${num(i.faltante)} ${i.unidad}`}</td>
+                <td className="num">{i.ok ? '—' : `${num(i.faltante)} ${unidad(i.faltante, i.unidad)}`}</td>
                 <td>{i.ok ? <Pill color="verde">Suficiente</Pill> : <Pill color="rojo">{i.critico ? 'Faltante crítico' : 'Faltante'}</Pill>}</td>
               </tr>))}</tbody>
           </table>

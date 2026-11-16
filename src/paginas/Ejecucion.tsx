@@ -96,7 +96,7 @@ function CabeceraOrden({ orden: o }: { orden: Orden }) {
       <Proceso actual={2} hechos={pasosHechos(o.estado)} item={`${o.numero} · ${o.producto_nombre}`} guia={o.estado === 'PLANIFICADA' || enProd} />
       <section className="tarjeta">
         <div className="tarjeta-cab">
-          <div><h2>{o.numero}</h2><p className="sub">Receta {o.receta_codigo} v{o.receta_version} · Objetivo {kg(o.cantidad_kg)}</p></div>
+          <div className="con-prod"><IconoProducto de={o.producto_nombre} grande /><div><h2>{o.numero} · {o.producto_nombre}</h2><p className="sub">Receta {o.receta_codigo} v{o.receta_version} · Objetivo {kg(o.cantidad_kg)}</p></div></div>
           {enProd ? (o.pausada ? <Pill color="rojo">Pausada · {o.motivo_pausa}</Pill> : <Pill color="ambar">En curso · {transcurrido()}</Pill>) : <PillOP estado={o.estado} />}
         </div>
         <div className="rejilla col-3">
@@ -297,8 +297,8 @@ function VistaEjecucion({ orden: o, alCambiar }: { orden: Orden; alCambiar: (o: 
           <div><h2>Consumo real por lote de origen</h2><p className="sub">SIGTA sugiere las partidas por <Termino t="fefo">FEFO</Termino>. Si usaste otra, cambiala. El stock se descuenta recién al finalizar.</p></div>
           <button className="btn" disabled={!editable} onClick={dividir}><Icono n="dividir" /> Dividir consumo</button>
         </div>
-        <table className="tabla">
-          <thead><tr><th>Insumo</th><th>Lote de origen</th><th>Teórico</th><th>Real</th><th></th></tr></thead>
+        <table className="tabla con-campos">
+          <thead><tr><th style={{ width: '34%' }}>Insumo</th><th>Lote de origen</th><th>Teórico</th><th>Real</th><th></th></tr></thead>
           <tbody>{filas.map((f, i) => {
             const item = itemDe(f.insumo_id);
             const mismos = filas.map((x, j) => (x.insumo_id === f.insumo_id ? j : -1)).filter((j) => j >= 0);

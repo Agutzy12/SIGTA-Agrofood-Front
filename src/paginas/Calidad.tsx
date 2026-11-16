@@ -158,7 +158,7 @@ function FormularioLote({ lote, alGuardar }: { lote: LoteCalidad; alGuardar: () 
             <Pill color={fuera ? 'rojo' : conformes === 6 ? 'verde' : 'gris'}>{conformes}/6 conformes</Pill>
             <button className="btn chico" disabled={!habilitado} title="Vuelve a poner los valores ideales de la especificación" onClick={cargarOptimos}>Valores óptimos</button>
           </div></div>
-        <table className="tabla">
+        <table className="tabla con-campos">
           <thead><tr><th>Determinación</th><th style={{ width: 240 }}>Resultado</th><th>Debe ser</th><th></th></tr></thead>
           <tbody>
             <tr><td><b>Humedad</b></td><td><ConUnidad unidad="%"><input className="entrada" id="humedad" inputMode="decimal" disabled={!habilitado} value={v.humedad} onChange={cambiar('humedad')} /></ConUnidad></td><td>≤ {num(e.humedad_max, 1)} %</td><td><Contraste ok={r.humedad} /></td></tr>
@@ -174,7 +174,7 @@ function FormularioLote({ lote, alGuardar }: { lote: LoteCalidad; alGuardar: () 
       <section className="tarjeta"><h2><Termino t="dictamen">Dictamen</Termino></h2>
         <div className="opciones-dictamen">
           {([['APROBAR_LIBERAR', 'Aprobar y liberar', 'Depósito puede recibir el lote.'], ['RECHAZAR_BLOQUEAR', 'Rechazar y bloquear', 'La orden pasa a Rechazada (Scrap).']] as const).map(([valor, t, d]) => (
-            <label key={valor} className={`opcion-dictamen ${dictamen === valor ? 'sel' : ''}`}>
+            <label key={valor} className={`opcion-dictamen ${valor === 'RECHAZAR_BLOQUEAR' ? 'rechazo' : ''} ${dictamen === valor ? 'sel' : ''}`}>
               <b><input type="radio" name="dictamen" value={valor} disabled={!habilitado} checked={dictamen === valor} onChange={() => setDictamen(valor)} /> {t}</b><span>{d}</span>
             </label>
           ))}

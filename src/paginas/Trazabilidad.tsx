@@ -191,8 +191,8 @@ function FichaLote({ f, buscar, despacho }: { f: Ficha; buscar: (q: string) => v
   return (
     <>
       <section className="tarjeta">
-        <div className="tarjeta-cab"><div><div className="codigo" style={{ fontSize: 12, textTransform: 'uppercase' }}>{lote.producto_codigo} · {lote.categoria_nombre ?? 'Producto terminado'}</div>
-          <h2 style={{ fontSize: 28, margin: '4px 0' }}>{lote.producto_nombre} · {lote.presentacion}</h2><p className="sub">{lote.codigo} · {op.numero}{lote.url_web && <> · <a className="enlace" href={lote.url_web} target="_blank" rel="noreferrer">Ficha en la web de Agrifood ↗</a></>}</p></div>
+        <div className="tarjeta-cab"><div className="con-prod"><IconoProducto de={lote.producto_nombre} grande /><div><div className="codigo" style={{ fontSize: 12, textTransform: 'uppercase' }}>{lote.producto_codigo} · {lote.categoria_nombre ?? 'Producto terminado'}</div>
+          <h2 style={{ fontSize: 26, margin: '2px 0' }}>{lote.producto_nombre} · {lote.presentacion}</h2><p className="sub">{lote.codigo} · {op.numero}{lote.url_web && <> · <a className="enlace" href={lote.url_web} target="_blank" rel="noreferrer">Ficha en la web de Agrifood ↗</a></>}</p></div></div>
           <Pill color={color}>{texto}</Pill></div>
         <div className="rejilla col-3">
           <Dato titulo="Elaborado · Vence">{fecha(op.inicio_real || lote.creado_en)} · {fecha(lote.vencimiento)}</Dato>
