@@ -192,7 +192,8 @@ test('glosario, ayuda y modo oscuro', async ({ page }) => {
   await expect(page.locator('html')).toHaveAttribute('data-tema', 'oscuro');
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('data-tema', 'oscuro');
-  await expect(page.getByAltText('Agrifood Argentina')).toHaveAttribute('src', '/img/logo-oscuro.png');
+  // el menú es gris carbón en los dos modos: el logo de Agrifood va siempre en color sobre su plaquita blanca
+  await expect(page.getByAltText('Agrifood Argentina')).toHaveAttribute('src', '/img/logo.png');
 });
 
 test('en el celular el menú se despliega y no hay desplazamiento horizontal', async ({ page }) => {

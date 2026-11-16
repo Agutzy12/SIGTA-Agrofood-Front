@@ -326,26 +326,35 @@ def deposito():
     return d
 
 def ingreso():
-    """La escena grande de la pantalla de ingreso: la granja completa, con más cielo y primer plano."""
-    d = Dibujo(101); d.caja = (0, -330, W, 740); fondo_y = 410
-    d.sol(905, -150, 78); d.nube(120, -230, 220); d.nube(520, -270, 170); d.nube(1010, -20, 150); d.nube(300, -90, 190); d.nube(700, -40, 120)
-    d.pajaros(360, -170, 6); d.pajaros(640, -120, 4); d.pajaros(1090, -230, 3)
-    d.lomas(96, 26); d.lomas(128, 18, g=0.8); d.lomas(160, 12, g=0.7); d.lomas(190, 8, g=0.6)
-    d.arboleda(0, 150, 212, 30); d.arboleda(560, 760, 208, 26); d.arboleda(1060, 1200, 214, 32)       # monte del fondo
-    d.molino(1010, 188)
-    for i, x in enumerate((96, 164, 232)): d.silo(x, 62, 196 - (i % 2) * 14, techo=28)                # batería de silos
-    cy = d.torre(310, 30, 262)
-    for x in (127, 195, 263): d.cano(326, cy + 6, x, SUELO - 214)
-    d.galpon(372, 236, 104, 190)                                                                      # galpón principal
-    d.arbol(64, alto=150, ancho=92); d.arbol(852, alto=178, ancho=112); d.arbol(930, alto=120, ancho=76)
-    d.casa(1050, SUELO, 104, 54); d.arbol(1176, alto=132, ancho=84)
-    d.alambrado(0, 96, paso=32); d.alambrado(800, 1050, paso=36)
-    d.suelo(); d.pasto(0, W, n=110)
-    d.surcos(-500, 1700, 620, y1=SUELO + 4, y2=fondo_y, n=44, g=0.85)
-    d.camino(470, 190, 610, SUELO + 2, fondo_y)
-    d.tractor(690, 288, 1.25); d.fardo(930, 296, 26); d.fardo(1000, 310, 30); d.fardo(250, 300, 28); d.fardo(170, 286, 22)
-    d.tranquera(330, 300, 96, 40); d.alambrado(40, 330, base=300, alto=26, paso=42)
-    d.trigal(-10, 300, base=fondo_y + 6, n=22, alto=104); d.trigal(900, W + 10, base=fondo_y + 6, n=22, alto=104)
+    """La escena de la pantalla de ingreso: vertical, llena todo el panel. Arriba queda cielo para el título."""
+    d = Dibujo(101); X0, X1, CIELO, FONDO = 150, 1050, -700, 440
+    d.caja = (X0, CIELO, X1 - X0, FONDO - CIELO)
+    # cielo: sol arriba a la derecha, nubes y bandadas (a la izquierda queda despejado para el texto)
+    d.sol(905, -560, 74)
+    d.nube(760, -420, 210); d.nube(600, -640, 150); d.nube(880, -300, 150); d.nube(640, -250, 130); d.nube(220, -210, 170); d.nube(420, -140, 150); d.nube(830, -150, 120)
+    d.pajaros(700, -500, 5); d.pajaros(560, -330, 4); d.pajaros(960, -230, 4); d.pajaros(330, -90, 5)
+    # lomas del fondo con un casco lejano
+    d.lomas(40, 30, X0, X1); d.lomas(84, 22, X0, X1, g=0.8); d.lomas(124, 16, X0, X1, g=0.7); d.lomas(160, 11, X0, X1, g=0.6)
+    d.arboleda(150, 300, 150, 22); d.silo(700, 14, 40, base=142, techo=7); d.galpon(722, 46, 20, 40, base=142, porton=False); d.arboleda(790, 900, 146, 20)
+    d.arboleda(480, 660, 186, 26); d.arboleda(940, 1050, 190, 28)
+    d.lomas(196, 6, X0, X1, g=0.6)
+    # la planta: batería de silos, noria y galpón
+    d.molino(978, 210)
+    for i, x in enumerate((176, 246, 316)): d.silo(x, 64, 222 - (i % 2) * 16, techo=30)
+    cy = d.torre(398, 32, 256)
+    for x in (208, 278, 348): d.cano(416, cy + 6, x, SUELO - 236)
+    d.galpon(448, 214, 108, 150)
+    d.arbol(178, alto=120, ancho=74); d.arbol(862, alto=196, ancho=124); d.arbol(934, alto=126, ancho=80)
+    d.casa(1010, SUELO, 70, 44)
+    d.alambrado(812, 1050, paso=34)
+    d.suelo(X0 - 10, X1 + 10); d.pasto(X0, X1, n=120)
+    # el campo: surcos, camino, tractor, fardos, tranquera y trigo en primer plano
+    d.surcos(-700, 1900, 600, y1=SUELO + 4, y2=FONDO, n=58, g=0.85)
+    d.camino(455, 220, 596, SUELO + 2, FONDO)
+    d.fardo(214, 286, 22); d.fardo(280, 304, 28); d.fardo(940, 292, 24); d.fardo(1004, 312, 30); d.fardo(848, 276, 18)
+    d.tractor(672, 306, 1.4)
+    d.tranquera(326, 312, 104, 44); d.alambrado(150, 326, base=312, alto=28, paso=44)
+    d.trigal(140, 440, base=FONDO + 6, n=26, alto=118); d.trigal(800, 1060, base=FONDO + 6, n=24, alto=118)
     return d
 def cosecha():
     d = Dibujo(57)

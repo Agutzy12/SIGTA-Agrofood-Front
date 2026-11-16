@@ -1,4 +1,5 @@
 /** Paso 3 · Controlar calidad: determinaciones, contraste con la especificación y dictamen firmado (CU-P03). */
+import { IconoProducto } from '../componentes/IconoLinea';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -65,7 +66,7 @@ export function Calidad() {
             {pendientes.length ? pendientes.map((l) => (
               <button key={l.id} className={`lote-item ${lote?.id === l.id ? 'sel' : ''}`} style={{ display: 'block', width: '100%', textAlign: 'left' }}
                 onClick={() => navegar(`/calidad/${l.id}`, { replace: true })}>
-                <span className="cod">{l.codigo}</span><b>{l.producto_nombre}</b>
+                <IconoProducto de={l.producto_nombre} /><span className="cod">{l.codigo}</span><b>{l.producto_nombre}</b>
                 <small>{kg(l.cantidad_kg)} · {l.creado_en.slice(0, 10) === hoyTexto() ? 'Hoy' : fecha(l.creado_en).slice(0, 5)}, {hora(l.creado_en)}</small>
                 <small className="est">{l.borrador ? 'Análisis en curso' : 'Análisis pendiente'}</small>
               </button>
@@ -79,7 +80,7 @@ export function Calidad() {
         <section className="tarjeta" style={{ marginTop: 6 }}><h2>Últimos dictámenes</h2>
           <table className="tabla" style={{ marginTop: 14 }}><thead><tr><th>Protocolo</th><th>Producto</th><th>Dictamen</th><th></th></tr></thead>
             <tbody>{historial.slice(0, 5).map((h) => (
-              <tr key={h.id}><td><b>{h.protocolo}</b><span className="peq">{h.lote_codigo}</span></td><td>{h.producto_nombre}<span className="peq">{h.analista} · {fechaHora(h.fecha)}</span></td>
+              <tr key={h.id}><td><b>{h.protocolo}</b><span className="peq">{h.lote_codigo}</span></td><td className="prod-celda"><IconoProducto de={h.producto_nombre} />{h.producto_nombre}<span className="peq">{h.analista} · {fechaHora(h.fecha)}</span></td>
                 <td>{h.dictamen === 'APROBAR_LIBERAR' ? <Pill color="verde">Aprobado</Pill> : <Pill color="rojo">Rechazado</Pill>}</td>
                 <td><button className="enlace" onClick={() => verProtocolo(h.lote_id)}>Ver →</button></td></tr>
             ))}</tbody></table>
@@ -147,7 +148,7 @@ function FormularioLote({ lote, alGuardar }: { lote: LoteCalidad; alGuardar: () 
   return (
     <>
       <section className="tarjeta">
-        <div className="tarjeta-cab"><div><h2>{lote.producto_nombre}</h2><p className="sub">Protocolo <Termino t="rbpm">R.BPM.01V01</Termino> · Pendiente de firma</p></div><Pill color="ambar">Cuarentena</Pill></div>
+        <div className="tarjeta-cab"><div className="con-prod"><IconoProducto de={lote.producto_nombre} grande /><div><h2>{lote.producto_nombre}</h2><p className="sub">Protocolo <Termino t="rbpm">R.BPM.01V01</Termino> · Pendiente de firma</p></div></div><Pill color="ambar">Cuarentena</Pill></div>
         <div className="rejilla col-3"><Dato titulo="Lote">{lote.codigo}</Dato><Dato titulo="Orden">{lote.op_numero}</Dato><Dato titulo="Cantidad · Vencimiento">{kg(lote.cantidad_kg)} · {fecha(lote.vencimiento)}</Dato></div>
       </section>
 

@@ -1,5 +1,5 @@
 /** Consulta · Catálogo de productos: el mismo de agrifood-argentina.com, con la receta y el palletizado que usa SIGTA. */
-import { IconoLinea } from '../componentes/IconoLinea';
+import { IconoLinea, IconoProducto } from '../componentes/IconoLinea';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -81,7 +81,7 @@ export function Catalogo() {
             <thead><tr><th>Producto</th><th>Presentación</th><th>Palletizado</th><th>Vida útil</th><th></th></tr></thead>
             <tbody>{c.productos.map((p) => (
               <tr key={p.id}>
-                <td><b>{p.nombre}</b><span className="peq">{p.codigo}{p.alergenos ? ` · ${p.alergenos.split('.')[0]}` : ''}</span></td>
+                <td className="prod-celda"><IconoProducto de={p.codigo} /><b>{p.nombre}</b><span className="peq">{p.codigo}{p.alergenos ? ` · ${p.alergenos.split('.')[0]}` : ''}</span></td>
                 <td>{p.presentacion}{p.raciones ? <span className="peq">{p.raciones} raciones</span> : null}</td>
                 <td className="num">{num(p.unidades_por_pallet)} × {pesoTexto(p.presentacion_kg)}<span className="peq">{num(p.unidades_por_pallet * p.presentacion_kg)} kg por pallet</span></td>
                 <td><Pill color="gris">{p.vida_util_meses} meses</Pill></td>

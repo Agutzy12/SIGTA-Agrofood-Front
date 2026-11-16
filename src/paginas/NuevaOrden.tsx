@@ -1,4 +1,5 @@
 /** Paso 1 · Planificar orden de producción (CU-P01). También completa un borrador (/ordenes/:id). */
+import { IconoProducto } from '../componentes/IconoLinea';
 import { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -137,8 +138,8 @@ function Formulario({ productos, lineas, borrador, numero }: { productos: Produc
 
       <section className="tarjeta" data-testid="ficha-producto">
         <div className="tarjeta-cab">
-          <div><h2>{producto.nombre} · {producto.presentacion}</h2>
-            <p className="sub">{producto.categoria_nombre} · {producto.familia} · Vida útil {producto.vida_util_meses} meses · {producto.unidades_por_pallet} unidades por pallet{producto.unidades_por_caja ? ` · cajas de ${producto.unidades_por_caja}` : ''}</p></div>
+          <div className="con-prod"><IconoProducto de={producto.nombre} grande /><div><h2>{producto.nombre} · {producto.presentacion}</h2>
+            <p className="sub">{producto.categoria_nombre} · {producto.familia} · Vida útil {producto.vida_util_meses} meses · {producto.unidades_por_pallet} unidades por pallet{producto.unidades_por_caja ? ` · cajas de ${producto.unidades_por_caja}` : ''}</p></div></div>
           {producto.url_web && <a className="btn chico" href={producto.url_web} target="_blank" rel="noreferrer">Ver en la web de Agrifood ↗</a>}
         </div>
         <details className="plegable" style={{ marginTop: 0 }}><summary>Ver ficha técnica (ingredientes, alérgenos, almacenamiento y embalaje)</summary>

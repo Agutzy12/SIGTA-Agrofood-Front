@@ -1,4 +1,5 @@
 /** Paso 2 · Elaborar: ejecución de la orden y consumo real por partida (CU-P02). */
+import { IconoProducto } from '../componentes/IconoLinea';
 import { useRef, useState } from 'react';
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -36,7 +37,7 @@ function ListaParaElegir() {
             <thead><tr><th>Orden</th><th>Producto y línea</th><th>Programación</th><th>Estado</th><th></th></tr></thead>
             <tbody>{utiles.map((o) => (
               <tr key={o.id} onClick={() => navegar(`/ejecucion/${o.id}`)}>
-                <td><b>{o.numero}</b></td><td><b>{o.producto_nombre}</b><span className="peq">{o.linea_nombre} · {kg(o.cantidad_kg)}</span></td>
+                <td><b>{o.numero}</b></td><td className="prod-celda"><IconoProducto de={o.producto_nombre} /><b>{o.producto_nombre}</b><span className="peq">{o.linea_nombre} · {kg(o.cantidad_kg)}</span></td>
                 <td className="num">{fechaCorta(o.fecha_proyectada)} · {o.hora_prevista}</td>
                 <td>{o.pausada ? <Pill color="rojo">Pausada</Pill> : <PillOP estado={o.estado} />}</td>
                 <td><Link className="enlace" to={`/ejecucion/${o.id}`}>Abrir →</Link></td>

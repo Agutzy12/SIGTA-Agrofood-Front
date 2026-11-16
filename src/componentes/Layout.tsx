@@ -52,7 +52,7 @@ export function Marca() {
     <div className="marca">
       <Link to="/ingresar" className="sigta-titulo" title="Volver al inicio de sesión" onClick={() => salir()}><IsotipoSigta /><b>SIGTA</b></Link>
       <div className="bajada">Gestión y Trazabilidad Alimentaria</div>
-      <div className="para"><span>para</span><LogoEmpresa /></div>
+      <div className="para"><span>para</span><LogoEmpresa siempreClaro /></div>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 /** Paso 4 · Ingresar a depósito: verificación física, pallets, ubicación y cierre de la OP (CU-P04). */
+import { IconoProducto } from '../componentes/IconoLinea';
 import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { api } from '../lib/api';
@@ -97,7 +98,7 @@ function FormularioRecepcion({ rec, pendientes }: { rec: Recepcion; pendientes: 
       contenido: pendientes.length ? (
         <table className="tabla clic"><tbody>{pendientes.map((p) => (
           <tr key={p.op_id} onClick={() => { cerrar(); navegar(`/deposito/${p.op_id}`); }}>
-            <td><b>{p.lote_codigo}</b><span className="peq">{p.producto_nombre}</span></td><td>{kg(p.cantidad_kg)}</td><td>{p.op_numero}</td></tr>
+            <td className="prod-celda"><IconoProducto de={p.producto_nombre} /><b>{p.lote_codigo}</b><span className="peq">{p.producto_nombre}</span></td><td>{kg(p.cantidad_kg)}</td><td>{p.op_numero}</td></tr>
         ))}</tbody></table>) : <p>No hay otros lotes liberados.</p>,
     });
   };
@@ -130,7 +131,7 @@ function FormularioRecepcion({ rec, pendientes }: { rec: Recepcion; pendientes: 
     <>
       {!rec.habilitado && <div className="aviso rojo"><Icono n="candado" tam={22} /><div><b>No se puede recibir este lote · <Termino t="bloqueo">bloqueo lógico</Termino></b>{rec.motivo}</div></div>}
       <section className="tarjeta">
-        <div className="tarjeta-cab"><div><h2>{producto.nombre} · {producto.presentacion}</h2><p className="sub">{num(lote.bultos)} unidades de {pesoTexto(producto.presentacion_kg)} · {producto.unidades_por_pallet} por pallet · lote liberado por Calidad</p></div>
+        <div className="tarjeta-cab"><div className="con-prod"><IconoProducto de={producto.nombre} grande /><div><h2>{producto.nombre} · {producto.presentacion}</h2><p className="sub">{num(lote.bultos)} unidades de {pesoTexto(producto.presentacion_kg)} · {producto.unidades_por_pallet} por pallet · lote liberado por Calidad</p></div></div>
           <button className="btn" onClick={cambiarLote}><Icono n="chevAbajo" tam={16} /> Cambiar lote</button></div>
         <div className="rejilla col-3"><Dato titulo="Lote">{lote.codigo}</Dato><Dato titulo="Orden">{rec.op.numero}</Dato><Dato titulo="Elaborado · Vencimiento">{kg(lote.cantidad_kg)} · {fecha(lote.vencimiento)}</Dato></div>
       </section>
@@ -233,7 +234,7 @@ function StockPT() {
       {stock.length ? (
         <table className="tabla"><thead><tr><th>Lote</th><th>Producto</th><th>Ubicación</th><th>Stock</th><th>Vence</th><th></th></tr></thead>
           <tbody>{stock.map((s) => (
-            <tr key={s.id}><td><b>{s.lote_codigo}</b></td><td>{s.producto_nombre}</td><td>{s.sector.split(' ·')[0]} / {s.rack} / {s.nivel}</td>
+            <tr key={s.id}><td><b>{s.lote_codigo}</b></td><td className="prod-celda"><IconoProducto de={s.producto_nombre} />{s.producto_nombre}</td><td>{s.sector.split(' ·')[0]} / {s.rack} / {s.nivel}</td>
               <td className="num">{kg(s.cantidad_kg)}</td><td>{fecha(s.vencimiento)}</td>
               <td><button className="enlace" onClick={() => despachar(s)}>Registrar despacho →</button></td></tr>
           ))}</tbody></table>
