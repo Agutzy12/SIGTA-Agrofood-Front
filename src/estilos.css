@@ -545,7 +545,9 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .termino:hover .explica, .termino:focus .explica { visibility: visible; opacity: 1; }
 
   /* ---------- Tarea sugerida para el rol ---------- */
-  .tarea { display: flex; align-items: center; gap: 18px; background: linear-gradient(90deg, var(--verde-suave), var(--superficie) 70%); border: 1px solid var(--linea); border-radius: 12px; padding: 18px 22px; margin-bottom: 22px; }
+  .tarea { display: flex; align-items: center; gap: 18px; background: var(--superficie); border: 1px solid var(--linea); border-left: 4px solid var(--marca-verde); border-radius: 12px; padding: 18px 22px; margin-bottom: 22px; position: relative; overflow: hidden; isolation: isolate; }
+  .tarea::after { content: ''; position: absolute; top: 0; bottom: 0; right: 150px; width: 420px; z-index: -1; pointer-events: none; background: linear-gradient(90deg, transparent, var(--marca-verde) 50%); opacity: .3;
+    -webkit-mask: url('/img/grabados/granja.svg') 50% 70% / auto 230% no-repeat; mask: url('/img/grabados/granja.svg') 50% 70% / auto 230% no-repeat; }
   .tarea .icono { width: 44px; height: 44px; border-radius: 12px; background: var(--marca-verde); color: #fff; display: grid; place-items: center; flex: none; }
   .tarea .texto { flex: 1; min-width: 0; }
   .tarea .texto small { display: block; color: var(--texto-suave); font-size: 12px; text-transform: uppercase; letter-spacing: .5px; }
@@ -563,25 +565,29 @@ table.tabla { width: 100%; border-collapse: collapse; }
 
   /* ---------- Pantalla de ingreso ---------- */
   .ingreso { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); background: var(--fondo); }
-  .ingreso .presentacion { --pres-texto: var(--texto); --pres-2: var(--texto-2); --pres-3: var(--texto-suave); background: radial-gradient(120% 90% at 20% 0%, var(--lima-suave) 0%, var(--superficie) 62%); border-right: 1px solid var(--linea); color: var(--pres-texto); padding: 56px 64px; display: flex; flex-direction: column; gap: 22px; position: relative; isolation: isolate; overflow: hidden; }
-  /* Ilustración propia (scripts/grabados.py): la granja, al pie de la presentación */
-  .ingreso .presentacion::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 170px; z-index: -1; pointer-events: none; background: var(--grabado);
-    -webkit-mask: url('/img/grabados/granja.svg') center bottom / auto 100% no-repeat; mask: url('/img/grabados/granja.svg') center bottom / auto 100% no-repeat; }
-  .ingreso .presentacion { padding-bottom: 196px; }
+  .ingreso .presentacion { --pres-texto: var(--texto); --pres-2: var(--texto-2); --pres-3: var(--texto-suave); background: var(--superficie); border-right: 1px solid var(--linea); color: var(--pres-texto); padding: 56px 64px; display: flex; flex-direction: column; gap: 22px; position: relative; isolation: isolate; overflow: hidden; }
+  /* Ilustración propia (scripts/grabados.py → ingreso.svg): la granja completa llena todo el espacio que queda abajo.
+     La presentación queda fija a la altura de la ventana, así el dibujo siempre se ve entero aunque el formulario sea más largo. */
+  .ingreso .presentacion { min-height: 100vh; position: sticky; top: 0; align-self: start; padding: 40px 64px 0; gap: 18px; }
+  .ingreso .presentacion::after { content: ''; flex: 1; min-height: 250px; margin: 0 -64px; pointer-events: none;
+    background: color-mix(in srgb, var(--marca-verde) 62%, var(--texto)); opacity: .9;
+    -webkit-mask: url('/img/grabados/ingreso.svg') center bottom / cover no-repeat; mask: url('/img/grabados/ingreso.svg') center bottom / cover no-repeat; }
+  :root[data-tema="oscuro"] .ingreso .presentacion::after { background: color-mix(in srgb, var(--marca-lima) 55%, var(--texto)); opacity: .7; }
+  .ingreso .cliente { margin-top: 4px !important; }
   .ingreso .presentacion .marca-grande { display: flex; align-items: center; gap: 14px; }
   .ingreso .presentacion .marca-grande .logotipo-sigta { display: block; width: auto; max-width: 100%; }
   .ingreso .presentacion .marca-grande b { font-size: 44px; letter-spacing: 3px; line-height: 1; }
   .ingreso .presentacion h1 { font-size: 30px; font-weight: 600; line-height: 1.2; max-width: 520px; margin-top: 18px; }
   .ingreso .presentacion p { font-size: 17px; line-height: 1.5; color: var(--pres-2); max-width: 500px; }
-  .ingreso .pasos-intro { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 14px; max-width: 480px; }
+  .ingreso .pasos-intro { list-style: none; margin: 4px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 22px; max-width: 520px; }
   .ingreso .pasos-intro li { display: flex; align-items: center; gap: 14px; }
   .ingreso .pasos-intro i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; background: var(--verde-suave); border: 1.5px solid var(--marca-verde); color: var(--pres-texto); display: grid; place-items: center; font-size: 14px; font-weight: 700; flex: none; }
   .ingreso .pasos-intro b { display: block; font-size: 16px; }
-  .ingreso .pasos-intro em { font-style: normal; font-weight: 400; color: var(--pres-3); font-size: 14px; }
+  .ingreso .pasos-intro em { font-style: normal; font-weight: 400; color: var(--pres-3); font-size: 13.5px; display: block; }
   .ingreso .pasos-intro li { align-items: flex-start; }
   .ingreso .pasos-intro span { font-size: 13.5px; color: var(--pres-2); }
   .ingreso .cliente { margin-top: auto; display: flex; align-items: center; gap: 14px; font-size: 13px; color: var(--pres-2); }
-  :root[data-tema="oscuro"] .ingreso .presentacion { background: radial-gradient(120% 90% at 20% 0%, #24301f 0%, var(--fondo) 60%); border-right-color: transparent; }
+  :root[data-tema="oscuro"] .ingreso .presentacion { background: var(--superficie); }
   .ingreso .cliente img { background: #fff; border-radius: 10px; padding: 6px 10px; box-sizing: content-box; }
   .ingreso .formulario { padding: 56px 64px; display: flex; flex-direction: column; justify-content: center; gap: 26px; max-width: 560px; width: 100%; margin: 0 auto; }
   .ingreso .formulario h2 { font-size: 28px; font-weight: 600; }
@@ -630,7 +636,7 @@ table.tabla { width: 100%; border-collapse: collapse; }
   @media (max-width: 1100px) {
     .ingreso { grid-template-columns: 1fr; }
     .ingreso .presentacion, .ingreso .formulario { padding: 32px 20px; }
-    .ingreso .presentacion { padding-bottom: 120px; } .ingreso .presentacion::after { height: 100px; }
+    .ingreso .presentacion { min-height: 0; position: static; padding-bottom: 0; } .ingreso .presentacion::after { margin: 0 -20px; min-height: 190px; }
     .flujo { grid-template-columns: 1fr 1fr; }
   }
   @media (max-width: 700px) {
@@ -738,18 +744,14 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .pasos-v li.hecho.activo .num { background: var(--marca-verde); color: #fff; box-shadow: 0 0 0 4px var(--verde-suave); }
 
   /* ---------- Encabezado de cada pantalla: banda con ícono, ruta y título ---------- */
-  .banner { --tono: var(--ambar); --tono-suave: var(--ambar-suave);
-    position: relative; overflow: hidden; display: flex; align-items: center; gap: 18px;
-    max-width: 1720px; margin: 0 auto 22px; padding: 20px 24px; border: 1px solid var(--linea); border-radius: 16px;
-    background:
-      radial-gradient(120% 140% at 0% 0%, var(--tono-suave) 0%, transparent 55%),
-      linear-gradient(90deg, transparent 60%, color-mix(in srgb, var(--tono) 6%, transparent)),
-      var(--superficie); }
-  /* A la derecha de cada encabezado va una ilustración propia según el área (scripts/grabados.py) */
-  .banner { --dibujo: url('/img/grabados/granja.svg'); }
-  .banner::before { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: min(62%, 760px); pointer-events: none;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--tono) 55%, var(--texto)) 45%); opacity: .34;
-    -webkit-mask: var(--dibujo) right 62% / auto 215% no-repeat; mask: var(--dibujo) right 62% / auto 215% no-repeat; }
+  .banner { --tono: var(--ambar); --tono-suave: var(--ambar-suave); --dibujo: url('/img/grabados/granja.svg');
+    position: relative; overflow: hidden; display: flex; align-items: center; gap: 18px; min-height: 124px;
+    max-width: 1720px; margin: 0 auto 22px; padding: 22px 26px 22px 30px; border: 1px solid var(--linea); border-radius: 16px; background: var(--superficie); }
+  /* Ilustración propia según el área (scripts/grabados.py); se desvanece hacia el título */
+  .banner::before { content: ''; position: absolute; top: 0; bottom: 0; right: 0; width: min(74%, 980px); pointer-events: none;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--tono) 45%, var(--texto)) 38%); opacity: .5;
+    -webkit-mask: var(--dibujo) right 64% / auto 200% no-repeat; mask: var(--dibujo) right 64% / auto 200% no-repeat; }
+  .banner.inicio { --dibujo: url('/img/grabados/cosecha.svg'); }
   .banner.produccion { --dibujo: url('/img/grabados/planta.svg'); }
   .banner.calidad { --dibujo: url('/img/grabados/campo.svg'); }
   .banner.deposito { --dibujo: url('/img/grabados/deposito.svg'); }
@@ -757,9 +759,6 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .banner.calidad { --tono: var(--azul); --tono-suave: var(--azul-suave); }
   .banner.deposito { --tono: var(--verde); --tono-suave: var(--verde-suave); }
   .banner.consulta { --tono: var(--marca-verde); --tono-suave: var(--verde-suave); }
-  .banner-icono { position: relative; z-index: 1; width: 56px; height: 56px; border-radius: 14px; flex: none; display: grid; place-items: center;
-    background: var(--tono-suave); color: var(--tono); border: 1px solid color-mix(in srgb, var(--tono) 35%, transparent); }
-  .banner-icono svg { display: block; }
   .contenido-cabecera { position: relative; z-index: 1; flex: 1; min-width: 0; }
   .banner:has(.contenido-cabecera:empty) { display: none; }
   .banner .miga { margin-bottom: 4px; text-transform: uppercase; letter-spacing: .7px; font-size: 11.5px; font-weight: 600; color: var(--tono); }
@@ -771,7 +770,6 @@ table.tabla { width: 100%; border-collapse: collapse; }
   .tarjeta > h2::before, .tarjeta-cab h2::before, .titulo-seccion::before { content: ''; display: inline-block; width: 4px; height: .9em; border-radius: 3px; background: var(--ambar); margin-right: 10px; vertical-align: -.08em; }
   @media (max-width: 700px) {
     .banner { padding: 16px; gap: 12px; align-items: flex-start; }
-    .banner-icono { width: 44px; height: 44px; border-radius: 12px; }
     .banner .cabecera { flex-direction: column; align-items: flex-start; gap: 10px; }
     .banner .cabecera h1 { font-size: 24px; }
   }
@@ -787,7 +785,18 @@ table.tabla { width: 100%; border-collapse: collapse; }
 .tarjeta-cab .con-linea { display: flex; align-items: center; gap: 14px; }
 .tarjeta-cab .con-linea .ico-linea { font-size: 42px; }
 
-/* Ilustración al pie del menú lateral */
-.sidebar .espacio { position: relative; min-height: 70px; }
-.sidebar .espacio::after { content: ''; position: absolute; left: -16px; right: -16px; bottom: 0; height: 70px; background: var(--grabado); pointer-events: none;
-  -webkit-mask: url('/img/grabados/campo.svg') 16% bottom / auto 100% no-repeat; mask: url('/img/grabados/campo.svg') 16% bottom / auto 100% no-repeat; }
+/* ---------- Ilustraciones repartidas por la página (todas propias: scripts/grabados.py) ---------- */
+/* Pie de cada pantalla: la granja vista de lejos, de lado a lado */
+.principal::after { content: ''; flex: none; height: 110px; margin-top: 8px; pointer-events: none; background: color-mix(in srgb, var(--marca-verde) 40%, var(--texto)); opacity: .34;
+  -webkit-mask: url('/img/grabados/horizonte.svg') left bottom / auto 100% repeat-x; mask: url('/img/grabados/horizonte.svg') left bottom / auto 100% repeat-x; }
+/* Menú lateral */
+.sidebar .espacio { position: relative; min-height: 96px; }
+.sidebar .espacio::after { content: ''; position: absolute; left: -16px; right: -16px; bottom: 0; height: 96px; pointer-events: none; background: color-mix(in srgb, var(--marca-verde) 40%, var(--texto)); opacity: .4;
+  -webkit-mask: url('/img/grabados/cosecha.svg') 38% bottom / auto 100% no-repeat; mask: url('/img/grabados/cosecha.svg') 38% bottom / auto 100% no-repeat; }
+/* Guía del circuito (columna derecha) */
+.guia::after { content: ''; display: block; height: 84px; border-top: 1px solid var(--linea); background: color-mix(in srgb, var(--marca-verde) 40%, var(--texto)); opacity: .38;
+  -webkit-mask: url('/img/grabados/planta.svg') 34% 60% / auto 190% no-repeat; mask: url('/img/grabados/planta.svg') 34% 60% / auto 190% no-repeat; }
+/* Cuando no hay nada para mostrar */
+.vacio-grande::before { content: ''; display: block; height: 120px; margin: 0 auto 14px; max-width: 480px; background: color-mix(in srgb, var(--marca-verde) 40%, var(--texto)); opacity: .45;
+  -webkit-mask: url('/img/grabados/campo.svg') center / contain no-repeat; mask: url('/img/grabados/campo.svg') center / contain no-repeat; }
+@media print { .principal::after, .guia::after, .banner::before { display: none; } }

@@ -36,15 +36,13 @@ const PROXIMOS: { texto: string; icono: NombreIcono; resumen: string; puntos: st
 ];
 
 /** Ícono y color del encabezado según la sección en la que se está. */
-function seccionDe(ruta: string): { icono: NombreIcono; clase: string } {
-  if (ruta.startsWith('/ordenes')) return { icono: 'ordenes', clase: 'produccion' };
-  if (ruta.startsWith('/ejecucion')) return { icono: 'rolProduccion', clase: 'produccion' };
-  if (ruta.startsWith('/calidad')) return { icono: 'rolCalidad', clase: 'calidad' };
-  if (ruta.startsWith('/deposito')) return { icono: 'rolDeposito', clase: 'deposito' };
-  if (ruta.startsWith('/trazabilidad')) return { icono: 'trazabilidad', clase: 'consulta' };
-  if (ruta.startsWith('/catalogo')) return { icono: 'caja', clase: 'consulta' };
-  if (ruta.startsWith('/como-funciona')) return { icono: 'ayuda', clase: 'consulta' };
-  return { icono: 'panel', clase: 'inicio' };
+/** Área de cada pantalla: define el color y la ilustración de su encabezado. */
+function seccionDe(ruta: string): { clase: string } {
+  if (ruta.startsWith('/ordenes') || ruta.startsWith('/ejecucion')) return { clase: 'produccion' };
+  if (ruta.startsWith('/calidad')) return { clase: 'calidad' };
+  if (ruta.startsWith('/deposito')) return { clase: 'deposito' };
+  if (ruta.startsWith('/trazabilidad') || ruta.startsWith('/catalogo') || ruta.startsWith('/como-funciona')) return { clase: 'consulta' };
+  return { clase: 'inicio' };
 }
 
 export function Marca() {
@@ -173,7 +171,6 @@ export function Layout() {
         <main className="contenido">
           <LateralContexto.Provider value={{ lateral, cabecera }}>
             <div className={`banner ${seccion.clase}`}>
-              <span className="banner-icono"><Icono n={seccion.icono} tam={26} /></span>
               <div className="contenido-cabecera" ref={setCabecera} />
             </div>
             <div className="contenido-grid">

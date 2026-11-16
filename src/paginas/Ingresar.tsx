@@ -51,11 +51,11 @@ export function Ingresar() {
         aria-label={tema === 'oscuro' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'} title={tema === 'oscuro' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}>
         <Icono n={tema === 'oscuro' ? 'sol' : 'luna'} /></button>
       <section className="presentacion">
-        <div className="marca-grande"><IntroLogo alto={150} /></div>
+        <div className="marca-grande"><IntroLogo alto={112} /></div>
         <h1>Sistema Integral de Gestión y Trazabilidad Alimentaria</h1>
         <p>Reemplaza los formularios en papel y las planillas de la planta: planifica la producción con las recetas, controla la calidad de cada lote antes de que salga y permite saber en segundos de qué insumos está hecho un producto y a qué cliente llegó.</p>
         <ol className="pasos-intro">
-          {PASOS.map((p) => <li key={p.n}><i>{p.n}</i><span><b>{p.titulo} <em>· {AREA[p.rol]}</em></b>{p.que.split(':')[0].replace(/\.$/, '')}.</span></li>)}
+          {PASOS.map((p) => <li key={p.n}><i>{p.n}</i><span><b>{p.titulo}</b><em>{AREA[p.rol]}</em></span></li>)}
         </ol>
         <div className="cliente"><LogoEmpresa alto={40} siempreClaro /><span>Para Agrifood Argentina S.A.<br />Módulo de Producción y Trazabilidad</span></div>
       </section>

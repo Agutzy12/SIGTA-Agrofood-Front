@@ -13,6 +13,7 @@ SUELO = 232
 class Dibujo:
     def __init__(self, semilla):
         self.r = random.Random(semilla); self.piezas = [([], '')]; self.t = self.piezas[0][0]
+        self.caja = (0, 0, W, H)   # x, y, ancho, alto del dibujo
     def pieza(self, silueta=''):
         """Empieza un objeto nuevo. Su silueta tapa todo lo que se dibujó antes (lo que queda detrás)."""
         self.piezas.append(([], silueta)); self.t = self.piezas[-1][0]
@@ -198,16 +199,93 @@ class Dibujo:
         for _ in range(n):
             px, py, s = x + self.r.uniform(-40, 40), y + self.r.uniform(-14, 14), self.r.uniform(3, 6)
             self.t.append(f'<path d="M{px-s:.1f} {py:.1f}q{s/2:.1f} {-s:.1f} {s:.1f} 0q{s/2:.1f} {-s:.1f} {s:.1f} 0" stroke-width="0.8"/>')
+    # ---- más piezas de campo ----
+    def sol(self, x, y, r=60):
+        self.t.append(f'<circle cx="{x}" cy="{y}" r="{r}" stroke-width="1.3"/>')
+        yy = y - r + 7
+        while yy < y + r - 3:                                                # rayado horizontal dentro del disco
+            m = math.sqrt(max(r * r - (yy - y) ** 2, 0)) - 4
+            if m > 4: self.linea(x - m, yy, x + m * self.r.uniform(.55, 1), yy, 0.6, 0.4)
+            yy += 7
+        for i in range(28):                                                  # rayos, uno largo y uno corto
+            an = math.tau * i / 28; a, b = r + 10, r + (46 if i % 2 else 24) + self.r.uniform(-4, 4)
+            self.linea(x + math.cos(an) * a, y + math.sin(an) * a, x + math.cos(an) * b, y + math.sin(an) * b, 0.8, 0.5)
+    def arboleda(self, x1, x2, base, alto=24):
+        x = x1
+        while x < x2:
+            a = alto * self.r.uniform(.7, 1.2); self.arbol(x, base, a, a * .7); x += a * self.r.uniform(.5, .9)
+    def casa(self, x, base=SUELO, ancho=86, alto=46):
+        y0 = base - alto; cumbre = y0 - 30
+        self.pieza(self.pol([(x - 6, y0), (x + ancho * .5, cumbre), (x + ancho + 6, y0), (x + ancho, y0), (x + ancho, base), (x, base), (x, y0)])
+                   + self.pol([(x + ancho * .7, y0 - 8), (x + ancho * .7, cumbre - 12), (x + ancho * .7 + 11, cumbre - 12), (x + ancho * .7 + 11, y0 - 8)]))
+        self.poli([(x, base), (x, y0), (x + ancho, y0), (x + ancho, base)], 1.3, cerrar=False)
+        self.linea(x - 6, y0, x + ancho * .5, cumbre, 1.4); self.linea(x + ancho + 6, y0, x + ancho * .5, cumbre, 1.4); self.linea(x - 6, y0, x + ancho + 6, y0, 1.2)
+        for i in range(1, 6): f = i / 6; self.linea(x - 6 + (ancho + 12) * f * .5, y0 + (cumbre - y0) * f, x + ancho + 6 - (ancho + 12) * f * .5, y0 + (cumbre - y0) * f, 0.6, 0.4)   # tejas
+        cx = x + ancho * .7
+        self.poli([(cx, y0 - 14), (cx, cumbre - 12), (cx + 11, cumbre - 12), (cx + 11, y0 - 6)], 1.1, cerrar=False)       # chimenea
+        hx, hy = cx + 5, cumbre - 16
+        self.curva([(hx, hy), (hx + 6, hy - 12), (hx - 3, hy - 24), (hx + 9, hy - 38), (hx + 2, hy - 52)], 0.7)            # humo
+        self.curva([(hx + 5, hy - 4), (hx + 12, hy - 16), (hx + 4, hy - 30), (hx + 14, hy - 44)], 0.6)
+        px = x + ancho * .16
+        self.poli([(px, base), (px, base - alto * .62), (px + 15, base - alto * .62), (px + 15, base)], 1.1, cerrar=False)   # puerta
+        for vx in (x + ancho * .46, x + ancho * .74):                                                                       # ventanas
+            self.poli([(vx, base - alto * .34), (vx, base - alto * .7), (vx + 15, base - alto * .7), (vx + 15, base - alto * .34)], 1)
+            self.linea(vx + 7.5, base - alto * .7, vx + 7.5, base - alto * .34, 0.6, 0.2); self.linea(vx, base - alto * .52, vx + 15, base - alto * .52, 0.6, 0.2)
+        self.rayado(x + ancho * .86, y0 + 3, x + ancho - 1, base - 1, 4, 62, 0.5)
+    def rueda(self, x, y, r, dientes=True):
+        self.t.append(f'<circle cx="{x}" cy="{y}" r="{r}" stroke-width="1.6"/><circle cx="{x}" cy="{y}" r="{r*.62:.1f}" stroke-width="1"/><circle cx="{x}" cy="{y}" r="{r*.18:.1f}" stroke-width="1.1"/>')
+        n = int(r * 1.1)
+        for i in range(n):
+            an = math.tau * i / n
+            if dientes: self.linea(x + math.cos(an) * r * .68, y + math.sin(an) * r * .68, x + math.cos(an + .22) * r * .95, y + math.sin(an + .22) * r * .95, 0.8, 0.2)
+        for i in range(6): an = math.tau * i / 6; self.linea(x + math.cos(an) * r * .2, y + math.sin(an) * r * .2, x + math.cos(an) * r * .6, y + math.sin(an) * r * .6, 0.7, 0.2)
+    def tractor(self, x, base=SUELO, e=1.0):
+        # tractor de perfil mirando a la derecha; x es el borde trasero
+        R, rr = 27 * e, 15 * e; ty, dy = base - R, base - rr
+        tx, dx = x + R, x + R + 78 * e
+        cab = [(x + 8 * e, ty - 6 * e), (x + 12 * e, ty - 58 * e), (x + 54 * e, ty - 58 * e), (x + 60 * e, ty - 26 * e)]
+        capot = [(x + 60 * e, ty - 26 * e), (x + 118 * e, ty - 22 * e), (x + 120 * e, dy - 4 * e), (x + 44 * e, ty + 4 * e)]
+        self.pieza(self.pol(cab + capot[1:] + [(x + 8 * e, ty + 4 * e)]) + f'<circle cx="{tx:.1f}" cy="{ty:.1f}" r="{R + 1:.1f}"/><circle cx="{dx:.1f}" cy="{dy:.1f}" r="{rr + 1:.1f}"/>')
+        self.poli(cab, 1.4, cerrar=False); self.linea(x + 6 * e, ty - 60 * e, x + 60 * e, ty - 60 * e, 1.6)                # techo
+        self.poli([(x + 18 * e, ty - 30 * e), (x + 20 * e, ty - 52 * e), (x + 50 * e, ty - 52 * e), (x + 54 * e, ty - 30 * e)], 0.9)   # vidrio
+        self.poli(capot, 1.4)
+        for i in range(1, 6): xx = x + (64 + i * 9) * e; self.linea(xx, ty - 20 * e, xx, ty - 4 * e, 0.6, 0.3)             # rejilla del capot
+        self.linea(x + 100 * e, ty - 23 * e, x + 100 * e, ty - 50 * e, 1.6); self.linea(x + 97 * e, ty - 50 * e, x + 104 * e, ty - 53 * e, 1.2)   # escape
+        self.rueda(tx, ty, R); self.rueda(dx, dy, rr)
+        self.curva([(tx - R - 3 * e, ty - 4 * e), (tx - R * .6, ty - R - 6 * e), (tx + R * .7, ty - R - 5 * e), (tx + R + 4 * e, ty - 6 * e)], 1.3)   # guardabarros
+    def fardo(self, x, base=SUELO, r=20):
+        cy = base - r
+        self.pieza(f'<circle cx="{x}" cy="{cy}" r="{r + 1}"/>')
+        self.t.append(f'<circle cx="{x}" cy="{cy}" r="{r}" stroke-width="1.4"/>')
+        pts = [(x + math.cos(a / 3) * (r - 2) * (a / 60), cy + math.sin(a / 3) * (r - 2) * (a / 60)) for a in range(6, 61, 2)]   # espiral de la paja
+        self.curva(pts, 0.7)
+        for i in range(14): an = self.r.uniform(0, math.tau); self.linea(x + math.cos(an) * r, cy + math.sin(an) * r, x + math.cos(an) * (r + 3), cy + math.sin(an) * (r + 3), 0.6, 0.3)
+        self.linea(x - r * .8, base, x + r * .9, base + 1, 0.8)
+    def tranquera(self, x, base=SUELO + 2, ancho=70, alto=30):
+        self.pieza()
+        for px in (x, x + ancho): self.linea(px, base + 3, px, base - alto - 6, 1.8); self.linea(px + 3, base + 3, px + 3, base - alto - 6, 0.8)
+        for f in (.15, .4, .65, .9): self.linea(x + 3, base - alto * f, x + ancho, base - alto * f, 1.1, 0.5)
+        self.linea(x + 3, base - alto * .15, x + ancho, base - alto * .9, 1); self.linea(x + ancho * .5, base - alto * .1, x + ancho * .5, base - alto * .95, 0.9)
+    def camino(self, x_cerca, ancho_cerca, x_lejos, y1=SUELO + 2, y2=H):
+        # camino de tierra que viene desde el horizonte
+        self.pieza(self.pol([(x_lejos - 3, y1), (x_lejos + 3, y1), (x_cerca + ancho_cerca, y2), (x_cerca, y2)]))
+        for lado in (0, 1):
+            xa, xb = x_lejos + (3 if lado else -3), x_cerca + (ancho_cerca if lado else 0)
+            self.curva([(xa, y1), (xa + (xb - xa) * .18 + 14, y1 + (y2 - y1) * .3), (xa + (xb - xa) * .55 - 10, y1 + (y2 - y1) * .65), (xb, y2)], 1.1)
+        for f in (.35, .5, .66, .8, .93):                                                      # huellas
+            cx = x_lejos + (x_cerca + ancho_cerca / 2 - x_lejos) * f ** 1.6; yy = y1 + (y2 - y1) * f; a = ancho_cerca * f * .16
+            self.linea(cx - a, yy, cx - a * .3, yy + 2, 0.6, 0.6); self.linea(cx + a * .4, yy + 1, cx + a, yy, 0.6, 0.6)
     def svg(self):
         # Cada pieza se recorta con las siluetas de las piezas que tiene adelante: así nada se ve "a través" de un galpón.
         defs, cuerpo = [], []
         for i, (trazos, _) in enumerate(self.piezas):
             delante = ''.join(sil for _, sil in self.piezas[i + 1:])
             if delante:
-                defs.append(f'<mask id="m{i}" maskUnits="userSpaceOnUse" x="0" y="0" width="{W}" height="{H}"><rect width="{W}" height="{H}" fill="#fff"/><g fill="#000" stroke="#000" stroke-width="2">{delante}</g></mask>')
+                defs.append(f'<mask id="m{i}" maskUnits="userSpaceOnUse" x="{self.caja[0]}" y="{self.caja[1]}" width="{self.caja[2]}" height="{self.caja[3]}"><rect x="{self.caja[0]}" y="{self.caja[1]}" width="{self.caja[2]}" height="{self.caja[3]}" fill="#fff"/><g fill="#000" stroke="#000" stroke-width="2">{delante}</g></mask>')
                 cuerpo.append(f'<g mask="url(#m{i})">{"".join(trazos)}</g>')
             else: cuerpo.append(''.join(trazos))
-        return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">'
+        x0, y0, w, h = self.caja
+        return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{x0} {y0} {w} {h}" fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round">'
                 f'<defs>{"".join(defs)}</defs>{"".join(cuerpo)}</svg>\n')
 
 def granja():
@@ -247,7 +325,48 @@ def deposito():
     for x in range(40, W, 110): d.linea(x, SUELO + 45, x + 46, SUELO + 45, 1)
     return d
 
+def ingreso():
+    """La escena grande de la pantalla de ingreso: la granja completa, con más cielo y primer plano."""
+    d = Dibujo(101); d.caja = (0, -330, W, 740); fondo_y = 410
+    d.sol(905, -150, 78); d.nube(120, -230, 220); d.nube(520, -270, 170); d.nube(1010, -20, 150); d.nube(300, -90, 190); d.nube(700, -40, 120)
+    d.pajaros(360, -170, 6); d.pajaros(640, -120, 4); d.pajaros(1090, -230, 3)
+    d.lomas(96, 26); d.lomas(128, 18, g=0.8); d.lomas(160, 12, g=0.7); d.lomas(190, 8, g=0.6)
+    d.arboleda(0, 150, 212, 30); d.arboleda(560, 760, 208, 26); d.arboleda(1060, 1200, 214, 32)       # monte del fondo
+    d.molino(1010, 188)
+    for i, x in enumerate((96, 164, 232)): d.silo(x, 62, 196 - (i % 2) * 14, techo=28)                # batería de silos
+    cy = d.torre(310, 30, 262)
+    for x in (127, 195, 263): d.cano(326, cy + 6, x, SUELO - 214)
+    d.galpon(372, 236, 104, 190)                                                                      # galpón principal
+    d.arbol(64, alto=150, ancho=92); d.arbol(852, alto=178, ancho=112); d.arbol(930, alto=120, ancho=76)
+    d.casa(1050, SUELO, 104, 54); d.arbol(1176, alto=132, ancho=84)
+    d.alambrado(0, 96, paso=32); d.alambrado(800, 1050, paso=36)
+    d.suelo(); d.pasto(0, W, n=110)
+    d.surcos(-500, 1700, 620, y1=SUELO + 4, y2=fondo_y, n=44, g=0.85)
+    d.camino(470, 190, 610, SUELO + 2, fondo_y)
+    d.tractor(690, 288, 1.25); d.fardo(930, 296, 26); d.fardo(1000, 310, 30); d.fardo(250, 300, 28); d.fardo(170, 286, 22)
+    d.tranquera(330, 300, 96, 40); d.alambrado(40, 330, base=300, alto=26, paso=42)
+    d.trigal(-10, 300, base=fondo_y + 6, n=22, alto=104); d.trigal(900, W + 10, base=fondo_y + 6, n=22, alto=104)
+    return d
+def cosecha():
+    d = Dibujo(57)
+    d.sol(1040, 96, 44); d.lomas(160, 12); d.lomas(184, 8, g=0.7); d.nube(200, 40, 150); d.nube(640, 56, 120); d.pajaros(820, 60, 4)
+    d.arboleda(0, 220, 214, 26); d.arboleda(980, 1200, 212, 24)
+    d.casa(120, SUELO, 80, 42); d.arbol(230, alto=92, ancho=60)
+    d.tractor(470, SUELO + 4, 1.0); d.fardo(680, SUELO + 2, 22); d.fardo(740, SUELO + 6, 26); d.fardo(830, SUELO + 2, 20); d.fardo(360, SUELO + 4, 22)
+    d.molino(920, 112); d.tranquera(1060, SUELO + 2, 70, 28)
+    d.suelo(); d.pasto(0, W, n=60); d.trigal(-10, W + 10, n=64, alto=54)
+    return d
+def horizonte():
+    """Tira baja y ancha para el pie de las pantallas: la granja vista de lejos. Empalma al repetirse."""
+    d = Dibujo(73); d.caja = (0, 120, W, 180)
+    d.lomas(176, 6, g=0.7); d.arboleda(20, 170, SUELO, 30); d.silo(196, 22, 62, techo=10); d.silo(222, 22, 56, techo=10); d.galpon(256, 70, 30, 60)
+    d.arboleda(420, 520, SUELO, 26); d.molino(566, 70); d.casa(630, SUELO, 50, 26); d.arboleda(700, 800, SUELO, 34)
+    d.tractor(850, SUELO + 2, 0.6); d.fardo(960, SUELO + 2, 11); d.fardo(990, SUELO + 3, 13); d.arboleda(1040, 1180, SUELO, 28)
+    d.pieza(); d.linea(0, SUELO, W, SUELO, 1.3, 0.3); d.pasto(0, W, n=60)
+    for y in (SUELO + 14, SUELO + 30, SUELO + 50): d.linea(0, y, W, y, 0.7, 0.2)
+    return d
+
 if __name__ == '__main__':
     destino = Path(__file__).resolve().parent.parent / 'public/img/grabados'; destino.mkdir(parents=True, exist_ok=True)
-    for nombre, f in (('granja', granja), ('planta', planta), ('campo', campo), ('deposito', deposito)):
+    for nombre, f in (('granja', granja), ('planta', planta), ('campo', campo), ('deposito', deposito), ('ingreso', ingreso), ('cosecha', cosecha), ('horizonte', horizonte)):
         (destino / f'{nombre}.svg').write_text(f().svg()); print(nombre, f'{(destino / f"{nombre}.svg").stat().st_size / 1024:.0f} KB')
