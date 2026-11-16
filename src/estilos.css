@@ -941,11 +941,18 @@ table.tabla { width: 100%; border-collapse: collapse; }
   /* tablas con campos para completar (Calidad, Elaborar): cada fila pasa a ser una ficha */
   .tabla.con-campos thead { display: none; }
   .tabla.con-campos, .tabla.con-campos tbody { display: block; }
-  .tabla.con-campos tr { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 8px 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--linea); }
+  .tabla.con-campos tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px 12px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--linea); }
   .tabla.con-campos tr:last-child { border-bottom: 0; }
   .tabla.con-campos td { display: block; padding: 0; border: 0; min-width: 0; }
   .tabla.con-campos td:first-child { grid-column: 1 / -1; }
   .tabla.con-campos td .entrada, .tabla.con-campos td select { width: 100%; }
   .tabla.con-campos td .pill { white-space: normal; }
+  .tabla.con-campos td select.entrada { min-width: 0; width: 100% !important; text-overflow: ellipsis; }
+  .tabla.con-campos td { min-width: 0 !important; }
+  .tabla.con-campos td[style*="min-width"] { grid-column: 1 / -1; }   /* el selector de lote ocupa todo el ancho */
   .lineas-tira a small { font-size: 11.5px; }
 }
+
+/* Las ayudas del glosario cerca del borde no generan desplazamiento lateral */
+.principal { overflow-x: clip; }
+@media (max-width: 700px) { .termino .explica { width: min(270px, 78vw); } }
