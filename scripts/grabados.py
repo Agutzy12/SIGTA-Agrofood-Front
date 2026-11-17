@@ -331,8 +331,8 @@ def ingreso():
     d.caja = (X0, CIELO, X1 - X0, FONDO - CIELO)
     # cielo: sol arriba a la derecha, nubes y bandadas (a la izquierda queda despejado para el texto)
     d.sol(905, -560, 74)
-    d.nube(760, -420, 210); d.nube(600, -640, 150); d.nube(880, -300, 150); d.nube(640, -250, 130); d.nube(220, -210, 170); d.nube(420, -140, 150); d.nube(830, -150, 120)
-    d.pajaros(700, -500, 5); d.pajaros(560, -330, 4); d.pajaros(960, -230, 4); d.pajaros(330, -90, 5)
+    d.nube(900, -380, 130); d.nube(880, -300, 150); d.nube(900, -150, 120); d.nube(200, -40, 150); d.nube(640, -20, 140)
+    d.pajaros(960, -430, 5); d.pajaros(990, -230, 4)
     # lomas del fondo con un casco lejano
     d.lomas(40, 30, X0, X1); d.lomas(84, 22, X0, X1, g=0.8); d.lomas(124, 16, X0, X1, g=0.7); d.lomas(160, 11, X0, X1, g=0.6)
     d.arboleda(150, 300, 150, 22); d.silo(700, 14, 40, base=142, techo=7); d.galpon(722, 46, 20, 40, base=142, porton=False); d.arboleda(790, 900, 146, 20)

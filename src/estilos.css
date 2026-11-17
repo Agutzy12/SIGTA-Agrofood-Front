@@ -956,3 +956,91 @@ table.tabla { width: 100%; border-collapse: collapse; }
 /* Las ayudas del glosario cerca del borde no generan desplazamiento lateral */
 .principal { overflow-x: clip; }
 @media (max-width: 700px) { .termino .explica { width: min(270px, 78vw); } }
+
+/* =====================================================================================
+   DETALLES FINOS (medidos con capturas ampliadas)
+   ===================================================================================== */
+/* Números y letras dentro de círculos: la tipografía los dibuja un poco arriba del centro; se compensa */
+.sidebar .menu a .cuenta { padding-top: .21em; }
+.ingreso .pasos-intro i { padding-top: .18em; }
+.avatar { padding-top: .12em; }
+.paginas button { display: grid; place-items: center; padding: .14em 0 0; }
+.pasos-v .num { width: 28px; height: 28px; }
+.sidebar .menu a .paso-n { width: 22px; height: 22px; }
+
+/* Barra de arriba opaca: el contenido ya no se transparenta al desplazar */
+.topbar { background: var(--superficie); backdrop-filter: none; }
+
+/* Franjas de color rectas (antes eran bordes que se afinaban en las esquinas redondeadas) */
+.tarea { border-left: 1px solid var(--linea); background: linear-gradient(var(--marca-verde), var(--marca-verde)) left / 5px 100% no-repeat, var(--superficie); padding-left: 26px; }
+.kpi { border-top: 1px solid var(--linea); background: linear-gradient(var(--franja, var(--acero)), var(--franja, var(--acero))) top / 100% 4px no-repeat, var(--superficie); }
+.kpi.destacado { --franja: var(--ambar); border-top-color: var(--ambar); background: linear-gradient(var(--ambar), var(--ambar)) top / 100% 4px no-repeat, var(--ambar-suave); }
+.kpi:last-child { --franja: var(--marca-verde); border-top-color: var(--linea); }
+
+/* "Cómo funciona": las cuatro tarjetas alinean su pie aunque el texto tenga distinto largo */
+.flujo .etapa-flujo { display: flex; flex-direction: column; align-items: flex-start; }
+.flujo .etapa-flujo .rol { margin-top: auto; }
+.flujo .etapa-flujo p + .rol { margin-top: auto; }
+.flujo .etapa-flujo > a, .flujo .etapa-flujo > .enlace { margin-top: 12px; }
+.flujo .etapa-flujo p:last-of-type { margin-bottom: 14px; }
+
+/* =====================================================================================
+   ALTERNATIVAS DE PALETA (para elegir). Se activan con <html data-paleta="campo"> o "papel".
+   Sin el atributo queda la actual ("bloques"). Cuando se elija una, las otras se borran.
+   ===================================================================================== */
+
+/* ---------- B · "Campo": el verde manda. Menú verde profundo, encabezados claros con el dibujo en tinta verde ---------- */
+:root[data-paleta="campo"] { --fondo: #EDEFE8; }
+:root[data-paleta="campo"] .sidebar { --lamina: #2C5530; --superficie: #2C5530; --fondo: #346238; --linea: #46764A; --gris-suave: #396A3D;
+  --texto: #FFFFFF; --texto-2: #E1ECDD; --texto-suave: #BFD6BA; }
+:root[data-paleta="campo"] .sidebar .menu a.activo { background: #F4F2EE; color: #244A27; }
+:root[data-paleta="campo"] .sidebar .menu a.activo .quien { color: #3D7A3C; }
+:root[data-paleta="campo"] .sidebar .menu a.activo .paso-n { background: var(--marca-verde); border-color: var(--marca-verde); color: #fff; }
+:root[data-paleta="campo"] .sidebar .menu a.activo .cuenta { background: var(--ambar); color: #2A2100; }
+:root[data-paleta="campo"] .topbar { border-bottom: 1px solid var(--linea); }
+:root[data-paleta="campo"] .banner { --color-area: var(--marca-verde); --tono-tinta: var(--texto); --tono-tinta-2: var(--texto-2);
+  background: linear-gradient(var(--color-area), var(--color-area)) left / 8px 100% no-repeat, var(--superficie); border: 1px solid var(--linea); padding-left: 34px; }
+:root[data-paleta="campo"] .banner::before { background: linear-gradient(90deg, transparent, var(--marca-verde) 34%); opacity: .6; }
+:root[data-paleta="campo"] .banner.produccion { --color-area: var(--ambar); }
+:root[data-paleta="campo"] .banner.calidad { --color-area: var(--acero); }
+:root[data-paleta="campo"] .banner.deposito { --color-area: var(--marca-lima); }
+:root[data-paleta="campo"] .banner.consulta { --color-area: #33373A; }
+:root[data-paleta="campo"] .banner .miga { color: var(--verde) !important; }
+:root[data-paleta="campo"] .banner .btn { box-shadow: none; border-color: var(--linea); }
+:root[data-paleta="campo"] .banner.produccion .btn.primario { background: var(--ambar); border-color: var(--ambar); color: var(--sobre-ambar); }
+:root[data-paleta="campo"] .banner .pill { background: var(--gris-suave); }
+:root[data-paleta="campo"] .tabla th { background: var(--verde-suave); color: var(--verde); }
+:root[data-paleta="campo"] .lineas-tira a { background: var(--superficie); color: var(--texto); border: 1px solid var(--linea); }
+:root[data-paleta="campo"] .lineas-tira a small { color: var(--texto-suave); }
+:root[data-paleta="campo"] .lineas-tira a .ico-linea { background: var(--texto-suave); }
+:root[data-paleta="campo"] .lineas-tira a.con-ordenes { background: var(--lima-suave); border-color: var(--marca-lima); }
+:root[data-paleta="campo"] .lineas-tira a.con-ordenes .ico-linea { background: var(--verde); }
+:root[data-paleta="campo"] .lineas-tira a.con-ordenes small { color: var(--verde); }
+
+/* ---------- C · "Papel y tinta": el gris de la paleta es la base. Menú gris claro, encabezados gris carbón como la lámina del ingreso ---------- */
+:root[data-paleta="papel"] { --fondo: #F5F4F2; }
+:root[data-paleta="papel"] .sidebar { --lamina: #DCDAD7; --superficie: #DCDAD7; --fondo: #CFCCC8; --linea: #C2BFBA; --gris-suave: #CECBC6;
+  --texto: #2E3336; --texto-2: #454C50; --texto-suave: #5C6368; border-right: 1px solid #C9C6C1; }
+:root[data-paleta="papel"] .sidebar .menu a.activo { background: #3D7A3C; color: #fff; }
+:root[data-paleta="papel"] .sidebar .menu a.activo .quien { color: #DDEBD9; }
+:root[data-paleta="papel"] .sidebar .menu a .paso-n { border-color: #3D7A3C; color: #3D7A3C; }
+:root[data-paleta="papel"] .sidebar .menu a.activo .paso-n { background: #fff; border-color: #fff; color: #3D7A3C; }
+:root[data-paleta="papel"] .sidebar .menu a.activo .cuenta { background: var(--ambar); color: #2A2100; }
+:root[data-paleta="papel"] .sidebar .menu-titulo { color: #3D7A3C; }
+:root[data-paleta="papel"] .sidebar .espacio::after { background: #2E3336; opacity: .32; }
+:root[data-paleta="papel"] .marca a.sigta-titulo:hover b { color: #3D7A3C; }
+:root[data-paleta="papel"] .topbar { border-bottom: 1px solid var(--linea); }
+:root[data-paleta="papel"] .banner { --color-area: var(--marca-verde); --tono: #2B2F32; --tono-tinta: #F4F2EE; --tono-tinta-2: rgba(244, 242, 238, .82);
+  background: linear-gradient(var(--color-area), var(--color-area)) bottom / 100% 6px no-repeat, #2B2F32; padding-bottom: 28px; }
+:root[data-paleta="papel"] .banner.produccion { --color-area: var(--ambar); }
+:root[data-paleta="papel"] .banner.calidad { --color-area: var(--acero); }
+:root[data-paleta="papel"] .banner.deposito { --color-area: var(--marca-lima); }
+:root[data-paleta="papel"] .banner.consulta { --color-area: #DCDAD7; }
+:root[data-paleta="papel"] .banner .miga { color: color-mix(in srgb, var(--color-area) 70%, #fff) !important; }
+:root[data-paleta="papel"] .banner.produccion .btn.primario { background: var(--ambar); border-color: var(--ambar); color: var(--sobre-ambar); }
+:root[data-paleta="papel"] .tabla th { background: var(--acero); color: #fff; }
+:root[data-paleta="papel"] .lineas-tira a { background: var(--superficie); color: var(--texto); border: 1px solid var(--linea); border-bottom: 3px solid var(--linea); }
+:root[data-paleta="papel"] .lineas-tira a small { color: var(--texto-suave); }
+:root[data-paleta="papel"] .lineas-tira a .ico-linea { background: var(--ambar); }
+:root[data-paleta="papel"] .lineas-tira a.con-ordenes { border-bottom-color: var(--marca-verde); }
+:root[data-paleta="papel"] .lineas-tira a.con-ordenes small { color: var(--verde); font-weight: 600; }
