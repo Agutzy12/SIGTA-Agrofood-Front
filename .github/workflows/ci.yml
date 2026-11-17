@@ -1,5 +1,5 @@
 # Integración continua: en cada push revisa tipos y estilo, compila y recorre el sistema en el navegador
-# contra la API real (rama main de SIGTA-Agrofood-Back) con PostgreSQL.
+# contra la API real (rama principal de SIGTA-Agrofood-Back, o la que diga la variable BACK_REF) con PostgreSQL.
 name: Pruebas
 on:
   push:
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           repository: Agutzy12/SIGTA-Agrofood-Back
-          ref: ${{ vars.BACK_REF || 'main' }}
+          ref: ${{ vars.BACK_REF }}   # vacío = la rama principal del repositorio
           path: back
       - name: Levantar la API con los datos iniciales
         working-directory: back
@@ -53,4 +53,4 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
       - if: failure()
-        run: cat api.log
+        run: cat api.log || true
